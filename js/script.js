@@ -100,4 +100,113 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Sticky CTA logic for mobile
+    const stickyCta = document.querySelector('.sticky-cta');
+    if (stickyCta) {
+        window.addEventListener('scroll', () => {
+            // Show sticky CTA after scrolling past the hero (approx 600px)
+            if (window.scrollY > 600) {
+                stickyCta.classList.add('active');
+            } else {
+                stickyCta.classList.remove('active');
+            }
+        });
+    }
+
+    // Countdown Timer Logic
+    function startCountdown() {
+        const timerElement = document.getElementById('countdown');
+        if (!timerElement) return;
+
+        function updateTimer() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+
+            const diff = endOfDay - now;
+
+            if (diff <= 0) {
+                timerElement.innerHTML = "00:00:00";
+                return;
+            }
+
+            const h = Math.floor(diff / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            timerElement.innerHTML = 
+                `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    }
+    
+    startCountdown();
+
+    // Sales Notification System
+    const salesData = [
+        "Carlos M. - Recife, PE",
+        "Ana P. - São Paulo, SP",
+        "Marcos R. - Curitiba, PR",
+        "Juliana S. - Belo Horizonte, MG",
+        "Felipe T. - Salvador, BA",
+        "Ricardo G. - Porto Alegre, RS",
+        "Maria L. - Brasília, DF",
+        "Eduardo X. - Campinas, SP",
+        "Beatriz C. - Fortaleza, CE",
+        "Thiago O. - Manaus, AM"
+    ];
+
+    const notification = document.getElementById('sale-notification');
+    const saleName = document.getElementById('sale-name');
+    const saleClose = document.getElementById('sale-close');
+
+    function showNotification() {
+        if (!notification) return;
+        
+        const randomSale = salesData[Math.floor(Math.random() * salesData.length)];
+        saleName.textContent = randomSale;
+        
+        notification.classList.add('active');
+        
+        // Hide after 6 seconds
+        setTimeout(() => {
+            notification.classList.remove('active');
+        }, 6000);
+    }
+
+    if (saleClose) {
+        saleClose.addEventListener('click', () => {
+            notification.classList.remove('active');
+        });
+    }
+
+    // Initial delay then show every 30 seconds
+    setTimeout(() => {
+        showNotification();
+        setInterval(showNotification, 30000);
+    }, 5000);
+
+    // Upsell Modal Logic
+    const btnBasico = document.getElementById('btn-basico');
+    const modal = document.getElementById('upsell-modal');
+    
+    if (btnBasico && modal) {
+        btnBasico.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (typeof fbq === 'function') {
+                fbq('track', 'InitiateCheckout');
+            }
+            modal.classList.add('active');
+        });
+
+        // Close modal if clicking outside the content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
 });
