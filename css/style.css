@@ -570,12 +570,122 @@ a {
     color: #f0f0f0;
 }
 
-.feature-item span {
+.feature-item h3 {
     font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 1.25rem;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #fff;
 }
+
+.feature-item p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.perfeito-para-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(204, 41, 41, 0.1);
+    color: var(--accent-red);
+    border: 1px solid var(--accent-red);
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-top: 25px;
+}
+
+.immediate-access-banner {
+    margin-top: 60px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+}
+
+.immediate-access-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent-red);
+}
+
+.access-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.access-icon-bg {
+    width: 70px;
+    height: 70px;
+    background: rgba(204, 41, 41, 0.1);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent-red);
+}
+
+.access-icon-bg svg {
+    width: 35px;
+    height: 35px;
+}
+
+.access-text h4 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-weight: 800;
+}
+
+.access-text p {
+    font-size: 1.05rem;
+    color: #e0e0e0;
+    margin-bottom: 15px;
+    max-width: 800px;
+    line-height: 1.6;
+}
+
+.access-labels {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .immediate-access-banner {
+        padding: 30px 20px;
+        text-align: center;
+    }
+    .access-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .access-icon-bg {
+        margin: 0 auto;
+    }
+    .access-text h4 {
+        font-size: 1.3rem;
+    }
+    .access-text p {
+        font-size: 0.95rem;
+    }
+}
+
 
 /* COLLECTIONS CAROUSEL */
 .mt-50 {
@@ -602,51 +712,44 @@ a {
     padding: 20px 0;
 }
 
-/* Gradient fades for the edges */
+/* Swiper specific adjustments */
+.swiper-wrapper {
+    transition-timing-function: linear !important;
+    align-items: flex-start;
+}
+
+
+.car-swiper, .car-swiper-reverse {
+    cursor: grab;
+}
+
+.car-swiper:active, .car-swiper-reverse:active {
+    cursor: grabbing;
+}
+
+
+/* Gradient fades removed as requested */
 .infinite-carousel::before,
 .infinite-carousel::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 150px;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
+    display: none;
 }
 
-.infinite-carousel::before {
-    left: 0;
-    background: linear-gradient(to right, var(--bg-darker) 0%, transparent 100%);
-}
-
-.infinite-carousel::after {
-    right: 0;
-    background: linear-gradient(to left, var(--bg-darker) 0%, transparent 100%);
-}
 
 .carousel-track {
     display: flex;
     gap: 20px;
     width: max-content;
-    animation: scroll-left 40s linear infinite;
+    /* Animation removed to use Swiper.js for drag and autoplay */
 }
 
 .reverse-track .carousel-track {
-    animation: scroll-right 40s linear infinite;
+    /* Animation removed to use Swiper.js for drag and autoplay */
 }
 
-@keyframes scroll-left {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-@keyframes scroll-right {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-}
 
 .carousel-item {
-    width: 280px;
+    width: 280px !important;
+    height: auto;
     flex-shrink: 0;
     background-color: var(--bg-card);
     border-radius: 12px;
@@ -655,17 +758,32 @@ a {
     transition: transform 0.3s ease;
 }
 
+@media (max-width: 768px) {
+    .carousel-item {
+        width: 220px !important;
+    }
+}
+
+
 .carousel-item:hover {
     transform: translateY(-5px);
     border-color: var(--accent-red);
 }
 
 .carousel-item img {
-    width: 100%;
-    height: 200px;
+    width: 100% !important;
+    height: 200px !important;
     object-fit: cover;
     border-bottom: 1px solid var(--border-color);
 }
+
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 150px !important;
+    }
+}
+
+
 
 .car-name {
     padding: 15px;
@@ -1296,9 +1414,10 @@ a {
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-.footer-links a:hover {
-    color: #fff !important;
+.footer-links a:hover, .social-link:hover {
+    color: var(--accent-red) !important;
 }
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {

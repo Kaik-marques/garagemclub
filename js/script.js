@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Intersection Observer for Reveal Animations (Multi-directional & Staggered)
-    const revealElements = document.querySelectorAll('.feature-item, .collection-category, .step-card, .price-card, .bonus-card, .advantage-card, .video-wrap, .reveal-trigger, .faq-item');
+    const revealElements = document.querySelectorAll('.feature-item, .collection-category, .step-card, .price-card, .bonus-card, .advantage-card, .video-wrap, .reveal-trigger, .faq-item, .immediate-access-banner');
+
     
     const revealOptions = {
         threshold: 0.05, // Trigger slightly earlier for a better feel on mobile
@@ -209,4 +210,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Swiper Initialization
+    const swiperOptions = {
+        loop: true,
+        speed: 8000,
+        autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+        },
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        freeMode: {
+            enabled: true,
+            momentum: true,
+            momentumRatio: 1,
+            momentumVelocityRatio: 1,
+        },
+        grabCursor: true,
+        allowTouchMove: true,
+        // Continuous effect
+        resistance: false,
+        breakpoints: {
+            320: { spaceBetween: 15 },
+            768: { spaceBetween: 20 }
+        }
+    };
+
+    // Forward swipers
+    new Swiper('.car-swiper', swiperOptions);
+
+    // Reverse swipers
+    new Swiper('.car-swiper-reverse', {
+        ...swiperOptions,
+        autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+            reverseDirection: true,
+        },
+    });
 });
+
