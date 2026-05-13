@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Manual Smooth Scroll for Anchor Links (Guaranteed Anchor Effect)
+    // Scroll suave manual para links âncora (Efeito de Âncora Garantido)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 60;
                 const startPosition = window.pageYOffset;
                 const distance = targetPosition - startPosition;
-                const duration = 1200; // 1.2 seconds for a noticeable 'pulling' effect
+                const duration = 1200; // 1.2 segundos para um efeito de 'puxada' perceptível
                 let start = null;
 
                 window.requestAnimationFrame(function step(timestamp) {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const progress = timestamp - start;
                     const percentage = Math.min(progress / duration, 1);
                     
-                    // Easing function (easeInOutCubic)
+                    // Função de atenuação (easeInOutCubic)
                     const easing = percentage < 0.5 
                         ? 4 * percentage * percentage * percentage 
                         : 1 - Math.pow(-2 * percentage + 2, 3) / 2;
@@ -34,19 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Intersection Observer for Reveal Animations (Multi-directional & Staggered)
+    // Intersection Observer para animações de revelação (Multidirecional e Escalonado)
     const revealElements = document.querySelectorAll('.feature-item, .collection-category, .step-card, .price-card, .bonus-card, .advantage-card, .video-wrap, .reveal-trigger, .faq-item, .immediate-access-banner');
 
     
     const revealOptions = {
-        threshold: 0.05, // Trigger slightly earlier for a better feel on mobile
+        threshold: 0.05, // Disparar um pouco mais cedo para uma melhor sensação no mobile
         rootMargin: "0px 0px -30px 0px"
     };
     
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                // Add a small delay if multiple items are seen at once (staggered effect)
+                // Adicionar um pequeno atraso se vários itens forem vistos ao mesmo tempo (efeito escalonado)
                 setTimeout(() => {
                     entry.target.classList.add('active');
                 }, 100); 
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach((el) => {
         el.classList.add('reveal');
         
-        // Stagger logic for children of grids
+        // Lógica de escalonamento para filhos de grids
         const parent = el.parentElement;
         if (parent && (parent.classList.contains('features-grid') || parent.classList.contains('bonus-grid') || parent.classList.contains('advantages-grid'))) {
             const siblings = Array.from(parent.children);
@@ -72,14 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
         revealObserver.observe(el);
     });
 
-    // FAQ Toggle
+    // Alternar FAQ (FAQ Toggle)
     document.querySelectorAll('.faq-question').forEach(question => {
         question.addEventListener('click', () => {
             const faqItem = question.parentElement;
             const answer = question.nextElementSibling;
             const icon = question.querySelector('svg');
             
-            // Close other items
+            // Fechar outros itens
             document.querySelectorAll('.faq-item').forEach(item => {
                 if (item !== faqItem) {
                     const otherAnswer = item.querySelector('.faq-answer');
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             
-            // Toggle current item
+            // Alternar item atual
             if (answer.style.display === 'block') {
                 answer.style.display = 'none';
                 icon.style.transform = 'rotate(0deg)';
@@ -102,11 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Sticky CTA logic for mobile
+    // Lógica do CTA Fixo para mobile (Sticky CTA)
     const stickyCta = document.querySelector('.sticky-cta');
     if (stickyCta) {
         window.addEventListener('scroll', () => {
-            // Show sticky CTA after scrolling past the hero (approx 600px)
+            // Mostrar CTA fixo após rolar o hero (aprox 600px)
             if (window.scrollY > 600) {
                 stickyCta.classList.add('active');
             } else {
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Countdown Timer Logic
+    // Lógica do Cronômetro de Contagem Regressiva
     function startCountdown() {
         const timerElement = document.getElementById('countdown');
         if (!timerElement) return;
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     startCountdown();
 
-    // Sales Notification System
+    // Sistema de Notificação de Vendas
     const salesData = [
         "Carlos M. - Recife, PE",
         "Ana P. - São Paulo, SP",
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         notification.classList.add('active');
         
-        // Hide after 6 seconds
+        // Esconder após 6 segundos
         setTimeout(() => {
             notification.classList.remove('active');
         }, 6000);
@@ -184,13 +184,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial delay then show every 30 seconds
+    // Atraso inicial e então mostrar a cada 30 segundos
     setTimeout(() => {
         showNotification();
         setInterval(showNotification, 30000);
     }, 5000);
 
-    // Upsell Modal Logic
+    // Lógica do Modal de Upsell (Pop-up)
     const btnBasico = document.getElementById('btn-basico');
     const modal = document.getElementById('upsell-modal');
     
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('active');
         });
 
-        // Close modal if clicking outside the content
+        // Fechar modal ao clicar fora do conteúdo
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.classList.remove('active');
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Swiper Initialization
+    // Inicialização do Swiper
     const swiperOptions = {
         loop: true,
         speed: 8000,
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         grabCursor: true,
         allowTouchMove: true,
-        // Continuous effect
+        // Efeito contínuo
         resistance: false,
         breakpoints: {
             320: { spaceBetween: 15 },
@@ -237,10 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Forward swipers
+    // Carrosséis normais
     new Swiper('.car-swiper', swiperOptions);
 
-    // Reverse swipers
+    // Carrosséis invertidos
     new Swiper('.car-swiper-reverse', {
         ...swiperOptions,
         autoplay: {
