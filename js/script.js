@@ -136,8 +136,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            timerElement.innerHTML = 
-                `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            const timerNums = timerElement.querySelectorAll('.timer-num');
+            if (timerNums.length === 3) {
+                timerNums[0].textContent = h.toString().padStart(2, '0');
+                timerNums[1].textContent = m.toString().padStart(2, '0');
+                timerNums[2].textContent = s.toString().padStart(2, '0');
+            } else {
+                timerElement.innerHTML = 
+                    `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
         }
 
         updateTimer();
@@ -190,26 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(showNotification, 30000);
     }, 5000);
 
-    // Lógica do Modal de Upsell (Pop-up)
-    const btnBasico = document.getElementById('btn-basico');
-    const modal = document.getElementById('upsell-modal');
-    
-    if (btnBasico && modal) {
-        btnBasico.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (typeof fbq === 'function') {
-                fbq('track', 'InitiateCheckout');
-            }
-            modal.classList.add('active');
-        });
-
-        // Fechar modal ao clicar fora do conteúdo
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-    }
+    // Lógica do Modal de Upsell (Removida - Agora redireciona direto no HTML)
 
     // Inicialização do Swiper
     const swiperOptions = {
@@ -248,6 +236,47 @@ document.addEventListener('DOMContentLoaded', () => {
             disableOnInteraction: false,
             reverseDirection: true,
         },
+    });
+
+    // Carrossel de Provas Sociais
+    new Swiper('.social-proof-swiper', {
+        loop: true,
+        speed: 500,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 20,
+        grabCursor: true,
+        pagination: {
+            el: '.social-proof-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            320: {
+                slidesPerView: 1.2,
+                spaceBetween: 15,
+                centeredSlides: true,
+            },
+            480: {
+                slidesPerView: 1.5,
+                spaceBetween: 15,
+                centeredSlides: true,
+            },
+            768: {
+                slidesPerView: 2.5,
+                spaceBetween: 20,
+                centeredSlides: true,
+            },
+            1024: {
+                slidesPerView: 3.5,
+                spaceBetween: 25,
+                centeredSlides: true,
+            }
+        }
     });
 });
 

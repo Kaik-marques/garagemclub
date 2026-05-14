@@ -97,6 +97,22 @@ a {
     letter-spacing: 1px;
 }
 
+@media (max-width: 768px) {
+    .py-section {
+        padding: 30px 0;
+    }
+    .section-header {
+        margin-bottom: 20px;
+    }
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    .section-header p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+}
+
 .section-header p {
     color: var(--text-muted);
     font-size: 1.1rem;
@@ -107,7 +123,7 @@ a {
 .investment-copy {
     color: #fff !important;
     font-weight: 500;
-    margin-top: 10px;
+    margin-top: 30px; /* Increased to avoid overlapping the timer */
     background: rgba(204, 41, 41, 0.1);
     padding: 15px;
     border-radius: 8px;
@@ -1123,16 +1139,119 @@ a {
     text-decoration: line-through;
 }
 
-.free-badge {
-    background-color: #28a745;
+/* OFFER URGENCY & TIMER */
+.offer-marquee {
+    background: var(--accent-red);
     color: #fff;
-    font-weight: 800;
-    padding: 6px 16px;
-    border-radius: 30px;
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    padding: 12px 0;
+    margin-bottom: 60px; /* Increased significantly to clear the title */
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 10;
 }
+
+.new-timer-container {
+    margin: 40px 0 50px; /* Increased bottom margin to 50px */
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.timer-label {
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: var(--text-muted);
+}
+
+.modern-timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.timer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.timer-num {
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: 900;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--accent-red);
+    min-width: 65px;
+    line-height: 1;
+    box-shadow: 0 0 20px rgba(204, 41, 41, 0.2);
+}
+
+.timer-text {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+}
+
+.timer-sep {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent-red);
+    padding-bottom: 25px;
+}
+
+@media (max-width: 768px) {
+    .timer-num {
+        font-size: 1.6rem;
+        min-width: 50px;
+        padding: 8px 10px;
+    }
+    .timer-sep {
+        font-size: 1.5rem;
+    }
+    .new-timer-container {
+        padding: 15px;
+    }
+}
+
+/* PLAN TRUST BADGES */
+.plan-trust-badges {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.plan-trust-badges p {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.trust-rating-mini {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #facc15;
+}
+
+.stars-mini {
+    letter-spacing: 2px;
+}
+
 
 /* OFFER / PRICING */
 .pricing-grid {
@@ -1421,11 +1540,22 @@ a {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+    .hero {
+        padding: 30px 0 10px;
+    }
     .hero h1 {
-        font-size: 2rem;
+        font-size: 1.6rem;
+        line-height: 1.1;
     }
     .hero p {
-        font-size: 1rem;
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+    .hero-subheadline {
+        font-size: 0.9rem;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
     .tag-shopee {
         top: 5%;
@@ -1440,19 +1570,53 @@ a {
     .category-title {
         font-size: 1.5rem;
     }
-    .infinite-carousel::before,
-    .infinite-carousel::after {
-        width: 50px;
+    .steps-grid {
+        gap: 30px; /* Increased gap between steps */
+    }
+    .step-card {
+        margin-bottom: 10px;
+    }
+    .step-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+    }
+    .step-card h3 {
+        font-size: 1rem;
+    }
+    .bonus-intro h2 {
+        font-size: 1.5rem;
+    }
+    .bonus-badge {
+        padding: 6px 20px;
+        font-size: 0.85rem;
+    }
+    .bonus-card h4 {
+        padding: 15px 10px 5px 10px;
+        font-size: 0.9rem;
+    }
+    .advantage-card {
+        padding: 15px;
+    }
+    .advantage-card h3 {
+        font-size: 1rem;
+    }
+    .advantage-card p {
+        font-size: 0.85rem;
     }
     .price-card.premium {
         transform: scale(1);
+        padding: 20px 15px;
     }
-    .guarantee-flex {
-        flex-direction: column;
-        text-align: center;
+    .price-card {
+        padding: 20px 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-    .guarantee-list {
-        align-items: center;
+    .plan-top-title {
+        font-size: 0.9rem;
+    }
+    .price {
+        font-size: 2.2rem;
     }
 }
 
@@ -1999,9 +2163,9 @@ a {
 .mini-session-compare {
     grid-column: 1 / -1;
     margin: 20px 0;
-    padding: 30px;
-    background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.95) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 35px 30px 25px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     text-align: center;
     position: relative;
@@ -2018,64 +2182,53 @@ a {
     background: linear-gradient(to right, transparent, var(--accent-red), transparent);
 }
 
-.compare-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    background: var(--accent-red);
-    color: #fff;
-    border-radius: 30px;
-    font-size: 0.75rem;
+.compare-headline {
+    font-size: 1.15rem;
     font-weight: 800;
-    margin-bottom: 25px;
-    letter-spacing: 1px;
+    color: #fff;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
 }
 
-.compare-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    text-align: left;
-}
-
-.compare-item {
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-}
-
-.compare-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--text-muted);
-}
-
-.compare-icon.highlight {
-    background: rgba(204, 41, 41, 0.1);
-    color: var(--accent-red);
-    box-shadow: 0 0 15px rgba(204, 41, 41, 0.1);
-}
-
-.compare-icon svg {
-    width: 20px;
-    height: 20px;
-}
-
-.compare-item p {
-    font-size: 0.9rem;
-    color: #e0e0e0;
+.compare-subtitle {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    margin-bottom: 20px;
     line-height: 1.5;
 }
 
-.compare-item p strong {
-    color: #fff;
-    display: block;
-    margin-bottom: 3px;
+.bounce-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bounce-arrow {
+    font-size: 1.1rem;
+    color: var(--accent-red);
+    display: inline-block;
+    animation: bounceArrow 1.4s ease-in-out infinite;
+}
+
+.bounce-arrow:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.bounce-arrow:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes bounceArrow {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(8px);
+        opacity: 1;
+    }
 }
 
 @media (max-width: 768px) {
@@ -2085,11 +2238,114 @@ a {
     }
     .mini-session-compare {
         order: 2; /* Ensure it stays between card 1 and card 2 if using flex column */
+        margin: 15px 0 60px 0 !important; /* Closer to the first plan, more gap from the second */
     }
     .price-card.premium {
         order: 3;
     }
     .basic-card {
         order: 1;
+    }
+}
+
+/* ===== SOCIAL PROOF CAROUSEL ===== */
+.social-proof {
+    padding-top: 40px;
+    padding-bottom: 60px;
+    overflow: hidden;
+}
+
+.social-proof-badge {
+    display: inline-block;
+    background: rgba(40, 167, 69, 0.12);
+    color: #28a745;
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.social-proof .section-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.social-proof .section-header p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+.social-proof-swiper {
+    width: 100%;
+    padding-bottom: 45px;
+}
+
+.social-proof-slide {
+    width: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    background: var(--bg-card);
+}
+
+.social-proof-slide:hover {
+    transform: translateY(-5px);
+    border-color: rgba(204, 41, 41, 0.4);
+    box-shadow: 0 15px 40px rgba(204, 41, 41, 0.15), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.social-proof-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+}
+
+/* Pagination dots */
+.social-proof-pagination {
+    position: relative !important;
+    bottom: 0 !important;
+    margin-top: 25px !important;
+    text-align: center;
+}
+
+.social-proof-pagination .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.25);
+    opacity: 1;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.social-proof-pagination .swiper-pagination-bullet-active {
+    background: var(--accent-red);
+    width: 28px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(204, 41, 41, 0.5);
+}
+
+@media (max-width: 768px) {
+    .social-proof {
+        padding-top: 30px;
+        padding-bottom: 40px;
+    }
+
+    .social-proof .section-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .social-proof-slide {
+        width: 240px;
+    }
+
+    .social-proof .section-header {
+        margin-bottom: 25px;
     }
 }
