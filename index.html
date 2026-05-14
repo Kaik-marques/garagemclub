@@ -23,24 +23,28 @@
     <!-- PIXEL META & UTMIFY -->
     <!-- TOKEN META API: EAALftZAspfLUBRaJd4pUZAWEhnvTzEh8StAm5uU0sp1SXZAquZA7N4Pz4eNDWWMUObLFTgMB9iSia4THDMZApZCMyUO0qa7ewYtlj663d7UtiP0iCOVYP0Ddm4xEzVZBJXuMSCJnSblCWMnnCS6ipqZCvs8OSR66XscCKpAwAgax1g9FwrUP6loEZBOZAMpHvhgspZAZCgZDZD -->
 
-    <!-- Meta Pixel Code -->
+    <!-- LeadFlow logic removed for speed optimization - Direct Checkout enabled -->
     <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1685943819082905');
-        fbq('track', 'PageView');
+      (function(){
+        function injectLink(b) {
+          if (!b.href || b.href.startsWith('javascript:')) return;
+          try {
+            var url = new URL(b.href);
+            var params = new URLSearchParams(window.location.search);
+            params.forEach(function(value, key) {
+              if (!url.searchParams.has(key)) url.searchParams.set(key, value);
+            });
+            b.href = url.toString();
+          } catch(e) {}
+        }
+        function injectAll() { document.querySelectorAll('a').forEach(injectLink); }
+        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', injectAll); } else { injectAll(); }
+        window.addEventListener('load', injectAll);
+      })();
     </script>
     <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=1685943819082905&ev=PageView&noscript=1" /></noscript>
+    src="https://www.facebook.com/tr?id=1455024295909896&ev=PageView&noscript=1"
+    /></noscript>
     <!-- End Meta Pixel Code -->
 
     <!-- Scripts UTMify -->
@@ -83,7 +87,7 @@
                 <span class="sale-action">acabou de comprar <span class="dot-online"></span></span>
                 <span class="sale-count">12 pessoas no site</span>
             </div>
-            <button class="sale-close" id="sale-close">×</button>
+            <button class="sale-close" id="sale-close">Ã-</button>
         </div>
     </div>
 
@@ -805,14 +809,14 @@
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg> Receba no E-mail e WhatsApp</li>
                     </ul>
-                    <a href="https://wa.me/5583993675962?text=Oi,%20quero%20garantir%20o%20plano%20de%209,90" id="btn-basico" class="cta-button ghost-btn w-100" onclick="fbq('track', 'InitiateCheckout');">QUERO O PLANO
+                    <a href="https://ggcheckout.app/checkout/v2/lLAlKlduN9zY6BXkprPY" id="btn-basico" class="cta-button ghost-btn w-100">QUERO O PLANO
                         BÁSICO</a>
                     
                     <!-- TRUST BADGES ABAIXO DO BOTÃO -->
                     <div class="plan-trust-badges">
                         <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
                         <div class="trust-rating-mini">
-                            <div class="stars-mini">⭐⭐⭐⭐⭐</div>
+                            <div class="stars-mini">★★★★★</div>
                             <span>(4.9/5)</span>
                         </div>
                     </div>
@@ -911,16 +915,15 @@
                         </div>
                     </div>
 
-                    <a href="https://wa.me/5583993675962?text=Oi,%20quero%20garantir%20o%20plano%20de%2029,90"
-                        id="btn-completo" class="cta-button opp-btn pulse-anim w-100" style="margin-bottom: 0;"
-                        onclick="fbq('track', 'InitiateCheckout');">QUERO O PLANO
+                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2"
+                        id="btn-completo" class="cta-button opp-btn pulse-anim w-100" style="margin-bottom: 0;">QUERO O PLANO
                         COMPLETO</a>
                     
                     <!-- TRUST BADGES ABAIXO DO BOTÃO -->
                     <div class="plan-trust-badges">
                         <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
                         <div class="trust-rating-mini">
-                            <div class="stars-mini">⭐⭐⭐⭐⭐</div>
+                            <div class="stars-mini">★★★★★</div>
                             <span>(4.9/5)</span>
                         </div>
                     </div>
@@ -1031,19 +1034,19 @@
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-content">
-                            "Os detalhes dos Muscle Cars são os melhores que já vi em arquivos STL."
+                            "Os detalhes dos Muscle Cars sÃ£o os melhores que jÃ¡ vi em arquivos STL."
                         </div>
                         <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/women/24.jpg" alt="Lúcia F.">
+                            <img src="https://randomuser.me/api/portraits/women/24.jpg" alt="LÃºcia F.">
                             <div>
-                                <strong>Lúcia F.</strong>
+                                <strong>LÃºcia F.</strong>
                                 <span>Artista Digital</span>
                             </div>
                         </div>
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-content">
-                            "Já recuperei o investimento vendendo apenas 4 miniaturas para amigos."
+                            "JÃ¡ recuperei o investimento vendendo apenas 4 miniaturas para amigos."
                         </div>
                         <div class="testimonial-author">
                             <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="Gustavo B.">
@@ -1055,7 +1058,7 @@
                     </div>
                     <div class="testimonial-card">
                         <div class="testimonial-content">
-                            "Arquivos limpos e sem erros de malha. Imprime de primeira sem desperdício de resina."
+                            "Arquivos limpos e sem erros de malha. Imprime de primeira sem desperdÃ­cio de resina."
                         </div>
                         <div class="testimonial-author">
                             <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Eduardo X.">
@@ -1066,7 +1069,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="slider-hint">Arraste para ver mais ➔</div>
+                <div class="slider-hint">Arraste para ver mais âz"</div>
             </div>
         </div>
     </section>
@@ -1082,7 +1085,7 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>Sim, os modelos STL são compatíveis com qualquer impressora 3D, tanto de resina quanto de
+                    <p>Sim, os modelos STL sÃ£o compatÃ­veis com qualquer impressora 3D, tanto de resina quanto de
                         filamento.</p>
                 </div>
             </div>
@@ -1093,29 +1096,29 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>Sim! Nossos modelos foram desenhados com atenção aos mínimos detalhes dos carros originais,
-                        resultando em impressões de alto nível.</p>
+                    <p>Sim! Nossos modelos foram desenhados com atenÃ§Ã£o aos mÃ­nimos detalhes dos carros originais,
+                        resultando em impressÃµes de alto nÃ­vel.</p>
                 </div>
             </div>
 
             <div class="faq-item reveal-up">
-                <div class="faq-question">Como funciona a impressão das partes? <svg viewBox="0 0 24 24" fill="none"
+                <div class="faq-question">Como funciona a impressÃ£o das partes? <svg viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>Os arquivos já vêm otimizados e prontos para fatiar no seu programa preferido (Cura, Chitubox,
-                        etc), muitos já separados em partes para facilitar.</p>
+                    <p>Os arquivos jÃ¡ vÃªm otimizados e prontos para fatiar no seu programa preferido (Cura, Chitubox,
+                        etc), muitos jÃ¡ separados em partes para facilitar.</p>
                 </div>
             </div>
 
             <div class="faq-item reveal-up">
-                <div class="faq-question">Qual é a forma de pagamento? <svg viewBox="0 0 24 24" fill="none"
+                <div class="faq-question">Qual Ã© a forma de pagamento? <svg viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>Aceitamos Pix, Cartão de Crédito e Boleto. O acesso via Pix ou Cartão é liberado imediatamente no
+                    <p>Aceitamos Pix, CartÃ£o de CrÃ©dito e Boleto. O acesso via Pix ou CartÃ£o Ã© liberado imediatamente no
                         seu e-mail e WhatsApp.</p>
                 </div>
             </div>
@@ -1126,8 +1129,8 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>Você receberá o link de acesso seguro e vitalício direto no seu e-mail e no seu WhatsApp logo
-                        após a aprovação da compra.</p>
+                    <p>VocÃª receberÃ¡ o link de acesso seguro e vitalÃ­cio direto no seu e-mail e no seu WhatsApp logo
+                        apÃ³s a aprovaÃ§Ã£o da compra.</p>
                 </div>
             </div>
 
@@ -1137,7 +1140,7 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>Sim! Os arquivos vêm em formato STL, que é o padrão universal suportado por todas essas marcas do
+                    <p>Sim! Os arquivos vÃªm em formato STL, que Ã© o padrÃ£o universal suportado por todas essas marcas do
                         mercado.</p>
                 </div>
             </div>
@@ -1148,8 +1151,8 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg></div>
                 <div class="faq-answer" style="display: none;">
-                    <p>O custo do material impresso (filamento/resina) é baixíssimo, e o valor percebido de uma
-                        miniatura premium pintada é alto, permitindo lucros excelentes na revenda.</p>
+                    <p>O custo do material impresso (filamento/resina) Ã© baixÃ­ssimo, e o valor percebido de uma
+                        miniatura premium pintada Ã© alto, permitindo lucros excelentes na revenda.</p>
                 </div>
             </div>
         </div>
@@ -1159,10 +1162,10 @@
     <section class="bottom-cta py-section bg-darker" style="text-align: center;">
         <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
             <h2 class="mb-3" style="font-size: 2.2rem; margin-bottom: 20px; width: 100%; text-align: center;">Comece sua
-                produção hoje mesmo</h2>
+                produÃ§Ã£o hoje mesmo</h2>
             <p class="mb-2"
                 style="font-size: 1rem; max-width: 800px; margin: 0 auto 15px; color: #fff; text-align: center;">Garanta
-                agora o pack mais completo de miniaturas 3D e receba acesso imediato a todos os arquivos e bônus.</p>
+                agora o pack mais completo de miniaturas 3D e receba acesso imediato a todos os arquivos e bÃ´nus.</p>
             <p class="hero-subheadline" style="margin-bottom: 30px; text-align: center; width: 100%;">Restam <span
                     class="accent-text">poucas vagas</span> com este desconto!</p>
 
@@ -1186,7 +1189,7 @@
         <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
             <div class="footer-bottom-row"
                 style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 25px;">
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">© 2024 - 2026 Garagem 3D. Todos os
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">Â© 2024 - 2026 Garagem 3D. Todos os
                     direitos reservados.</p>
                 <div class="footer-social" style="display: flex; align-items: center; gap: 15px;">
                     <a href="https://www.instagram.com/garagem3dclub/" target="_blank" rel="noopener noreferrer"
@@ -1198,7 +1201,7 @@
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                         </svg>
                     </a>
-                    <a href="https://wa.me/5583993675962?text=Oi!%20Quero%20garantir%20meu%20acesso%20à%20Garagem%203D,%20mas%20fiquei%20com%20uma%20dúvida%20rápida%20sobre%20o%20pagamento.%20Pode%20me%20ajudar?"
+                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2"
                         target="_blank" rel="noopener noreferrer" class="social-link"
                         style="color: var(--text-muted); transition: color 0.3s; display: flex;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -1215,24 +1218,17 @@
             <div class="footer-links mb-4"
                 style="font-size: 0.8rem; margin-bottom: 30px; width: 100%; text-align: center;">
                 <a href="#" style="color: var(--text-muted); text-decoration: none; margin: 0 10px;">Termos de Uso</a>
-                <a href="#" style="color: var(--text-muted); text-decoration: none; margin: 0 10px;">Política de
+                <a href="#" style="color: var(--text-muted); text-decoration: none; margin: 0 10px;">PolÃ­tica de
                     Privacidade</a>
             </div>
 
             <p
                 style="font-size: 0.7rem; color: #555; max-width: 900px; margin: 0 auto; line-height: 1.5; text-align: center;">
-                Este site não faz parte do site do Facebook ou da Facebook Inc. Além disso, este site não é endossado
-                pelo Facebook de forma alguma. FACEBOOK é uma marca comercial da FACEBOOK, Inc.<br><br>
-                Os resultados variam de pessoa para pessoa e dependem do esforço individual e do mercado local.
-            </p>
-        </div>
-    </footer>
-
-    <!-- WHATSAPP FLOATING BUTTON -->
-    <a href="https://wa.me/5583993675962?text=Oi!%20Quero%20garantir%20meu%20acesso%20à%20Garagem%203D,%20mas%20fiquei%20com%20uma%20dúvida%20rápida%20sobre%20o%20pagamento.%20Pode%20me%20ajudar?"
+                Este site nÃ£o faz parte do site do Facebook ou da Facebook Inc. AlÃ    <!-- WHATSAPP FLOATING BUTTON -->
+    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2"
         class="whatsapp-float" target="_blank" rel="noopener noreferrer">
         <img src="assets/logo whatsapp.webp" alt="WhatsApp Support">
-        <span class="whatsapp-tooltip">Dúvidas? Fale conosco!</span>
+        <span class="whatsapp-tooltip">DÃºvidas? Fale conosco!</span>
     </a>
 
     <!-- STICKY CTA MOBILE -->
@@ -1252,11 +1248,10 @@
             </div>
             <div class="modal-body">
                 <img src="assets/mockup_premium.webp" alt="Plano Completo" class="modal-mockup">
-                <p>Por que levar apenas o básico se você pode ter o <strong>acesso total</strong> com um desconto único?
+                <p>Por que levar apenas o bÃ¡sico se vocÃª pode ter o <strong>acesso total</strong> com um desconto Ãºnico?
                 </p>
 
-                <ul
-                    style="text-align: left; list-style: none; padding: 0; margin: 15px 0; font-size: 0.9rem; color: #e0e0e0; display: flex; flex-direction: column; gap: 8px;">
+                <ul style="text-align: left; list-style: none; padding: 0; margin: 15px 0; font-size: 0.9rem; color: #e0e0e0; display: flex; flex-direction: column; gap: 8px;">
                     <li style="display: flex; align-items: center; gap: 10px;">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745" stroke-width="3">
                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -1267,12 +1262,21 @@
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745" stroke-width="3">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        Coleção JDM & Superesportivos
+                        ColeÃ§Ã£o JDM & Superesportivos
                     </li>
                     <li style="display: flex; align-items: center; gap: 10px;">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745" stroke-width="3">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
+                        Todos os 6 BÃ´nus Inclusos
+                    </li>
+                </ul>
+
+                <div class="modal-actions">
+                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" class="cta-button primary-btn upsell-confirm">SIM! QUERO O ACESSO COMPLETO</a>
+                    <button id="close-modal" class="upsell-decline">NÃ£o, quero continuar com o bÃ¡sico</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1280,5 +1284,5 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
 </body>
-
 </html>
+
