@@ -24,23 +24,68 @@
     <!-- TOKEN META API: EAALftZAspfLUBRaJd4pUZAWEhnvTzEh8StAm5uU0sp1SXZAquZA7N4Pz4eNDWWMUObLFTgMB9iSia4THDMZApZCMyUO0qa7ewYtlj663d7UtiP0iCOVYP0Ddm4xEzVZBJXuMSCJnSblCWMnnCS6ipqZCvs8OSR66XscCKpAwAgax1g9FwrUP6loEZBOZAMpHvhgspZAZCgZDZD -->
 
     <!-- LeadFlow logic removed for speed optimization - Direct Checkout enabled -->
+    <!-- Meta Pixel Code - LeadFlow Tracking -->
     <script>
-      (function(){
-        function injectLink(b) {
-          if (!b.href || b.href.startsWith('javascript:')) return;
-          try {
-            var url = new URL(b.href);
-            var params = new URLSearchParams(window.location.search);
-            params.forEach(function(value, key) {
-              if (!url.searchParams.has(key)) url.searchParams.set(key, value);
-            });
-            b.href = url.toString();
-          } catch(e) {}
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1455024295909896');
+    fbq('track', 'PageView');
+
+    (function(){
+      // Tracking Function for InitiateCheckout
+      function trackCheckout(plan) {
+        if (typeof fbq === 'function') {
+          const config = plan === 'basico' 
+            ? { content_name: 'Plano Básico', value: 9.90, currency: 'BRL' }
+            : { content_name: 'Plano Completo', value: 29.90, currency: 'BRL' };
+          fbq('track', 'InitiateCheckout', config);
         }
-        function injectAll() { document.querySelectorAll('a').forEach(injectLink); }
-        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', injectAll); } else { injectAll(); }
-        window.addEventListener('load', injectAll);
-      })();
+      }
+
+      function injectLink(b) {
+        if (!b.href || b.href.startsWith('javascript:')) return;
+        try {
+          var url = new URL(b.href);
+          var params = new URLSearchParams(window.location.search);
+          params.forEach(function(value, key) {
+            if (!url.searchParams.has(key)) url.searchParams.set(key, value);
+          });
+          b.href = url.toString();
+        } catch(e) {}
+      }
+
+      function setupCheckoutTracking() {
+        // Track Básico
+        const btnBasico = document.getElementById('btn-basico');
+        if (btnBasico) {
+          btnBasico.addEventListener('click', function() { trackCheckout('basico'); });
+        }
+
+        // Track Completo (Main button, Upsell, WhatsApp)
+        const completoSelectors = ['#btn-completo', '.upsell-confirm', '.whatsapp-float'];
+        completoSelectors.forEach(function(sel) {
+          document.querySelectorAll(sel).forEach(function(el) {
+            el.addEventListener('click', function() { trackCheckout('completo'); });
+          });
+        });
+
+        // Inject UTMs into all links
+        document.querySelectorAll('a').forEach(injectLink);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupCheckoutTracking);
+      } else {
+        setupCheckoutTracking();
+      }
+      window.addEventListener('load', setupCheckoutTracking);
+    })();
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1455024295909896&ev=PageView&noscript=1"
