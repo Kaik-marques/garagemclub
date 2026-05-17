@@ -26,70 +26,73 @@
     <!-- LeadFlow logic removed for speed optimization - Direct Checkout enabled -->
     <!-- Meta Pixel Code - LeadFlow Tracking -->
     <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window,document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1455024295909896');
-    fbq('track', 'PageView');
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1455024295909896');
+        fbq('track', 'PageView');
 
-    (function(){
-      // Tracking Function for InitiateCheckout
-      function trackCheckout(plan) {
-        if (typeof fbq === 'function') {
-          const config = plan === 'basico' 
-            ? { content_name: 'Plano Básico', value: 9.90, currency: 'BRL' }
-            : { content_name: 'Plano Completo', value: 29.90, currency: 'BRL' };
-          fbq('track', 'InitiateCheckout', config);
-        }
-      }
+        (function () {
+            // Tracking Function for InitiateCheckout
+            function trackCheckout(plan) {
+                if (typeof fbq === 'function') {
+                    const config = plan === 'basico'
+                        ? { content_name: 'Plano Básico', value: 9.90, currency: 'BRL' }
+                        : { content_name: 'Plano Completo', value: 29.90, currency: 'BRL' };
+                    fbq('track', 'InitiateCheckout', config);
+                }
+            }
 
-      function injectLink(b) {
-        if (!b.href || b.href.startsWith('javascript:')) return;
-        try {
-          var url = new URL(b.href);
-          var params = new URLSearchParams(window.location.search);
-          params.forEach(function(value, key) {
-            if (!url.searchParams.has(key)) url.searchParams.set(key, value);
-          });
-          b.href = url.toString();
-        } catch(e) {}
-      }
+            function injectLink(b) {
+                var hrefAttr = b.getAttribute('href');
+                if (!b.href || b.href.startsWith('javascript:') || (hrefAttr && hrefAttr.startsWith('#'))) return;
+                try {
+                    var url = new URL(b.href);
+                    var params = new URLSearchParams(window.location.search);
+                    params.forEach(function (value, key) {
+                        if (!url.searchParams.has(key)) url.searchParams.set(key, value);
+                    });
+                    b.href = url.toString();
+                } catch (e) { }
+            }
 
-      function setupCheckoutTracking() {
-        // Track Básico
-        const btnBasico = document.getElementById('btn-basico');
-        if (btnBasico) {
-          btnBasico.addEventListener('click', function() { trackCheckout('basico'); });
-        }
+            function setupCheckoutTracking() {
+                // Track Básico (agora dentro do pop-up)
+                const btnBasico = document.querySelector('.upsell-decline');
+                if (btnBasico) {
+                    btnBasico.addEventListener('click', function () { trackCheckout('basico'); });
+                }
 
-        // Track Completo (Main button, Upsell, WhatsApp)
-        const completoSelectors = ['#btn-completo', '.upsell-confirm', '.whatsapp-float'];
-        completoSelectors.forEach(function(sel) {
-          document.querySelectorAll(sel).forEach(function(el) {
-            el.addEventListener('click', function() { trackCheckout('completo'); });
-          });
-        });
+                // Track Completo (Main button, Upsell, WhatsApp)
+                const completoSelectors = ['#btn-completo', '.upsell-confirm', '.whatsapp-float'];
+                completoSelectors.forEach(function (sel) {
+                    document.querySelectorAll(sel).forEach(function (el) {
+                        el.addEventListener('click', function () { trackCheckout('completo'); });
+                    });
+                });
 
-        // Inject UTMs into all links
-        document.querySelectorAll('a').forEach(injectLink);
-      }
+                // Inject UTMs into all links
+                document.querySelectorAll('a').forEach(injectLink);
+            }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupCheckoutTracking);
-      } else {
-        setupCheckoutTracking();
-      }
-      window.addEventListener('load', setupCheckoutTracking);
-    })();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupCheckoutTracking);
+            } else {
+                setupCheckoutTracking();
+            }
+            window.addEventListener('load', setupCheckoutTracking);
+        })();
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1455024295909896&ev=PageView&noscript=1"
-    /></noscript>
+            src="https://www.facebook.com/tr?id=1455024295909896&ev=PageView&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->
 
     <!-- Scripts UTMify -->
@@ -169,7 +172,6 @@
             <div class="hero-cta-wrapper">
                 <p class="hero-subheadline">Tenha acesso à maior coleção de <span class="accent-text">modelos STL
                         premium com carros esportivos, clássicos e colecionáveis</span> prontos para impressão.</p>
-                <a href="#oferta" class="cta-button primary-btn large-btn pulse-anim">QUERO ACESSAR AGORA</a>
 
                 <div class="trust-badge-hero">
                     <div class="trust-text">
@@ -769,22 +771,28 @@
             <div class="swiper social-proof-swiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide social-proof-slide">
-                        <img src="assets/Provas Sociais G3C 01.webp" alt="Prova Social - Resultado de venda 01" loading="lazy">
+                        <img src="assets/Provas Sociais G3C 01.webp" alt="Prova Social - Resultado de venda 01"
+                            loading="lazy">
                     </div>
                     <div class="swiper-slide social-proof-slide">
-                        <img src="assets/Provas Sociais G3C 02.webp" alt="Prova Social - Resultado de venda 02" loading="lazy">
+                        <img src="assets/Provas Sociais G3C 02.webp" alt="Prova Social - Resultado de venda 02"
+                            loading="lazy">
                     </div>
                     <div class="swiper-slide social-proof-slide">
-                        <img src="assets/Provas Sociais G3C 03.webp" alt="Prova Social - Resultado de venda 03" loading="lazy">
+                        <img src="assets/Provas Sociais G3C 03.webp" alt="Prova Social - Resultado de venda 03"
+                            loading="lazy">
                     </div>
                     <div class="swiper-slide social-proof-slide">
-                        <img src="assets/Provas Sociais G3C 04.webp" alt="Prova Social - Resultado de venda 04" loading="lazy">
+                        <img src="assets/Provas Sociais G3C 04.webp" alt="Prova Social - Resultado de venda 04"
+                            loading="lazy">
                     </div>
                     <div class="swiper-slide social-proof-slide">
-                        <img src="assets/Provas Sociais G3C 05.webp" alt="Prova Social - Resultado de venda 05" loading="lazy">
+                        <img src="assets/Provas Sociais G3C 05.webp" alt="Prova Social - Resultado de venda 05"
+                            loading="lazy">
                     </div>
                     <div class="swiper-slide social-proof-slide">
-                        <img src="assets/Provas Sociais G3C 06.webp" alt="Prova Social - Resultado de venda 06" loading="lazy">
+                        <img src="assets/Provas Sociais G3C 06.webp" alt="Prova Social - Resultado de venda 06"
+                            loading="lazy">
                     </div>
                 </div>
                 <div class="swiper-pagination social-proof-pagination"></div>
@@ -797,9 +805,13 @@
         <div class="container">
             <div class="offer-marquee reveal-up">
                 <div class="marquee-item">
-                    <svg viewBox="0 0 24 24" class="marquee-icon" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    <svg viewBox="0 0 24 24" class="marquee-icon" fill="currentColor">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    </svg>
                     <span>OFERTA SOMENTE HOJE</span>
-                    <svg viewBox="0 0 24 24" class="marquee-icon" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    <svg viewBox="0 0 24 24" class="marquee-icon" fill="currentColor">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    </svg>
                 </div>
             </div>
 
@@ -810,11 +822,14 @@
                 <div class="new-timer-container reveal-up">
                     <p class="timer-label">A PROMOÇÃO TERMINA EM:</p>
                     <div id="countdown" class="modern-timer">
-                        <div class="timer-block"><span class="timer-num">00</span><span class="timer-text">HORAS</span></div>
+                        <div class="timer-block"><span class="timer-num">00</span><span class="timer-text">HORAS</span>
+                        </div>
                         <div class="timer-sep">:</div>
-                        <div class="timer-block"><span class="timer-num">00</span><span class="timer-text">MIN</span></div>
+                        <div class="timer-block"><span class="timer-num">00</span><span class="timer-text">MIN</span>
+                        </div>
                         <div class="timer-sep">:</div>
-                        <div class="timer-block"><span class="timer-num">00</span><span class="timer-text">SEG</span></div>
+                        <div class="timer-block"><span class="timer-num">00</span><span class="timer-text">SEG</span>
+                        </div>
                     </div>
                 </div>
 
@@ -854,12 +869,13 @@
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg> Receba no E-mail e WhatsApp</li>
                     </ul>
-                    <a href="https://ggcheckout.app/checkout/v2/lLAlKlduN9zY6BXkprPY" id="btn-basico" class="cta-button ghost-btn w-100">QUERO O PLANO
+                    <a href="#" id="btn-basico" class="cta-button ghost-btn w-100">QUERO O PLANO
                         BÁSICO</a>
-                    
+
                     <!-- TRUST BADGES ABAIXO DO BOTÃO -->
                     <div class="plan-trust-badges">
-                        <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
+                        <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e
+                            <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
                         <div class="trust-rating-mini">
                             <div class="stars-mini">★★★★★</div>
                             <span>(4.9/5)</span>
@@ -960,13 +976,14 @@
                         </div>
                     </div>
 
-                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2"
-                        id="btn-completo" class="cta-button opp-btn pulse-anim w-100" style="margin-bottom: 0;">QUERO O PLANO
+                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" id="btn-completo"
+                        class="cta-button opp-btn pulse-anim w-100" style="margin-bottom: 0;">QUERO O PLANO
                         COMPLETO</a>
-                    
+
                     <!-- TRUST BADGES ABAIXO DO BOTÃO -->
                     <div class="plan-trust-badges">
-                        <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
+                        <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e
+                            <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
                         <div class="trust-rating-mini">
                             <div class="stars-mini">★★★★★</div>
                             <span>(4.9/5)</span>
@@ -1234,7 +1251,8 @@
         <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
             <div class="footer-bottom-row"
                 style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 25px;">
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">&copy; 2024 - 2026 Garagem 3D. Todos os
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">&copy; 2024 - 2026 Garagem 3D. Todos
+                    os
                     direitos reservados.</p>
                 <div class="footer-social" style="display: flex; align-items: center; gap: 15px;">
                     <a href="https://www.instagram.com/garagem3dclub/" target="_blank" rel="noopener noreferrer"
@@ -1246,8 +1264,8 @@
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                         </svg>
                     </a>
-                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2"
-                        target="_blank" rel="noopener noreferrer" class="social-link"
+                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" target="_blank"
+                        rel="noopener noreferrer" class="social-link"
                         style="color: var(--text-muted); transition: color 0.3s; display: flex;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                             stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
@@ -1269,66 +1287,76 @@
 
             <p
                 style="font-size: 0.7rem; color: #555; max-width: 900px; margin: 0 auto; line-height: 1.5; text-align: center;">
-                Este site não faz parte do site do Facebook ou da Facebook Inc. Além disso, este site não é endossado pelo Facebook de qualquer maneira. FACEBOOK é uma marca comercial da FACEBOOK, Inc.
-            </p>    <!-- WHATSAPP FLOATING BUTTON -->
-    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2"
-        class="whatsapp-float" target="_blank" rel="noopener noreferrer">
-        <img src="assets/logo whatsapp.webp" alt="WhatsApp Support">
-        <span class="whatsapp-tooltip">Dúvidas? Fale conosco!</span>
-    </a>
+                Este site não faz parte do site do Facebook ou da Facebook Inc. Além disso, este site não é endossado
+                pelo Facebook de qualquer maneira. FACEBOOK é uma marca comercial da FACEBOOK, Inc.
+            </p> <!-- WHATSAPP FLOATING BUTTON -->
+            <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" class="whatsapp-float" target="_blank"
+                rel="noopener noreferrer">
+                <img src="assets/logo whatsapp.webp" alt="WhatsApp Support">
+                <span class="whatsapp-tooltip">Dúvidas? Fale conosco!</span>
+            </a>
 
-    <!-- STICKY CTA MOBILE -->
-    <div class="sticky-cta">
-        <div class="sticky-cta-content" style="justify-content: center;">
-            <a href="#oferta" class="cta-button primary-btn sticky-btn" style="width: 100%; max-width: 300px;">QUERO MEU
-                ACESSO</a>
-        </div>
-    </div>
-
-    <!-- POP-UP UPSELL -->
-    <div id="upsell-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="offer-tag">OFERTA EXCLUSIVA</span>
-                <h2>ESPERA! QUE TAL O PLANO COMPLETO COM DESCONTO?</h2>
-            </div>
-            <div class="modal-body">
-                <img src="assets/mockup_premium.webp" alt="Plano Completo" class="modal-mockup">
-                <p>Por que levar apenas o básico se você pode ter o <strong>acesso total</strong> com um desconto único?
-                </p>
-
-                <ul style="text-align: left; list-style: none; padding: 0; margin: 15px 0; font-size: 0.9rem; color: #e0e0e0; display: flex; flex-direction: column; gap: 8px;">
-                    <li style="display: flex; align-items: center; gap: 10px;">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        150+ Arquivos STL Premium
-                    </li>
-                    <li style="display: flex; align-items: center; gap: 10px;">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Coleção JDM & Superesportivos
-                    </li>
-                    <li style="display: flex; align-items: center; gap: 10px;">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Todos os 6 Bônus Inclusos
-                    </li>
-                </ul>
-
-                <div class="modal-actions">
-                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" class="cta-button primary-btn upsell-confirm">SIM! QUERO O ACESSO COMPLETO</a>
-                    <button id="close-modal" class="upsell-decline">Não, quero continuar com o básico</button>
+            <!-- STICKY CTA MOBILE -->
+            <div class="sticky-cta">
+                <div class="sticky-cta-content" style="justify-content: center;">
+                    <a href="#oferta" class="cta-button primary-btn sticky-btn"
+                        style="width: 100%; max-width: 300px;">QUERO MEU
+                        ACESSO</a>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Swiper.js JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="js/script.js"></script>
+            <!-- POP-UP UPSELL -->
+            <div id="upsell-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="offer-tag">OFERTA IRRESISTÍVEL</span>
+                        <h2>ESPERE! LEVE O PLANO COMPLETO POR APENAS R$ 19,90!</h2>
+                    </div>
+                    <div class="modal-body">
+                        <img src="assets/mockup_premium.webp" alt="Plano Completo" class="modal-mockup">
+                        <p>Por que levar apenas o básico se você pode ter a <strong>coleção completa</strong> e todos os
+                            bônus com esse desconto único?</p>
+
+                        <ul
+                            style="text-align: left; list-style: none; padding: 0; margin: 15px 0; font-size: 0.9rem; color: #e0e0e0; display: flex; flex-direction: column; gap: 8px;">
+                            <li style="display: flex; align-items: center; gap: 10px;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                150+ Arquivos STL Premium
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 10px;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Coleção JDM & Superesportivos
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 10px;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745"
+                                    stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Todos os 6 Bônus Inclusos
+                            </li>
+                        </ul>
+
+                        <div class="modal-actions">
+                            <a href="https://ggcheckout.app/checkout/v2/yvbd700pilNn6E0rBKRf"
+                                class="cta-button primary-btn upsell-confirm pulse-anim">SIM! QUERO O ACESSO
+                                COMPLETO</a>
+                            <a href="https://ggcheckout.app/checkout/v2/lLAlKlduN9zY6BXkprPY" class="upsell-decline"
+                                style="display: inline-block; margin-top: 10px;">Não, quero continuar com o básico por
+                                R$ 9,90</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swiper.js JS -->
+            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+            <script src="js/script.js"></script>
 </body>
-</html>
 
+</html>

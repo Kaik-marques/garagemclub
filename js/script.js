@@ -197,7 +197,23 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(showNotification, 30000);
     }, 5000);
 
-    // Lógica do Modal de Upsell (Removida - Agora redireciona direto no HTML)
+    // Lógica do Modal de Upsell
+    const btnBasico = document.getElementById('btn-basico');
+    const upsellModal = document.getElementById('upsell-modal');
+
+    if (btnBasico && upsellModal) {
+        btnBasico.addEventListener('click', (e) => {
+            e.preventDefault();
+            upsellModal.classList.add('active');
+        });
+
+        // Fechar ao clicar fora do conteúdo
+        upsellModal.addEventListener('click', (e) => {
+            if (e.target === upsellModal) {
+                upsellModal.classList.remove('active');
+            }
+        });
+    }
 
     // Inicialização do Swiper
     const swiperOptions = {
