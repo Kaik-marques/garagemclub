@@ -23,8 +23,7 @@
     <!-- PIXEL META & UTMIFY -->
     <!-- TOKEN META API: EAALftZAspfLUBRaJd4pUZAWEhnvTzEh8StAm5uU0sp1SXZAquZA7N4Pz4eNDWWMUObLFTgMB9iSia4THDMZApZCMyUO0qa7ewYtlj663d7UtiP0iCOVYP0Ddm4xEzVZBJXuMSCJnSblCWMnnCS6ipqZCvs8OSR66XscCKpAwAgax1g9FwrUP6loEZBOZAMpHvhgspZAZCgZDZD -->
 
-    <!-- LeadFlow logic removed for speed optimization - Direct Checkout enabled -->
-    <!-- Meta Pixel Code - LeadFlow Tracking -->
+    <!-- Meta Pixel + Invisible Ghost Tracking - LeadFlow -->
     <script>
         !function (f, b, e, v, n, t, s) {
             if (f.fbq) return; n = f.fbq = function () {
@@ -41,54 +40,80 @@
         fbq('track', 'PageView');
 
         (function () {
-            // Tracking Function for InitiateCheckout
-            function trackCheckout(plan) {
-                if (typeof fbq === 'function') {
-                    const config = plan === 'basico'
-                        ? { content_name: 'Plano Básico', value: 9.90, currency: 'BRL' }
-                        : { content_name: 'Plano Completo', value: 29.90, currency: 'BRL' };
-                    fbq('track', 'InitiateCheckout', config);
+            function encodeToInvisible(text) {
+                var binary = "";
+                for (var i = 0; i < text.length; i++) {
+                    var bin = text[i].charCodeAt(0).toString(2);
+                    binary += "00000000".substring(bin.length) + bin;
                 }
+                var invisible = "";
+                for (var i = 0; i < binary.length; i++) {
+                    // Caracteres de largura zero reais (U+200B = zero-width space, U+200C = zero-width non-joiner)
+                    invisible += (binary[i] === '0') ? '\u200B' : '\u200C';
+                }
+                return invisible;
             }
 
+            var params = new URLSearchParams(window.location.search);
+            var utmData = [];
+            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'campaign_id', 'adset_id', 'ad_id', 'src', 'ad'].forEach(function (key) {
+                var val = params.get(key);
+                if (val) utmData.push(key + '=' + encodeURIComponent(val));
+            });
+
+            if (utmData.length === 0) return;
+            var ghostTag = encodeToInvisible(utmData.join('&'));
+
             function injectLink(b) {
-                var hrefAttr = b.getAttribute('href');
-                if (!b.href || b.href.startsWith('javascript:') || (hrefAttr && hrefAttr.startsWith('#'))) return;
+                if (!b.href || b.href.startsWith('javascript:')) return;
                 try {
                     var url = new URL(b.href);
-                    var params = new URLSearchParams(window.location.search);
-                    params.forEach(function (value, key) {
-                        if (!url.searchParams.has(key)) url.searchParams.set(key, value);
-                    });
-                    b.href = url.toString();
+                    if (b.href.indexOf('wa.me') !== -1 || b.href.indexOf('api.whatsapp.com') !== -1 || b.href.indexOf('whatsapp.com/send') !== -1) {
+                        var currentText = url.searchParams.get('text') || '';
+                        currentText = currentText.replace(/\s*\[REF:[^\]]+\]/g, "");
+                        currentText = currentText.replace(/[\u200B\u200C]{10,}/g, "");
+                        url.searchParams.set('text', currentText + ghostTag);
+                        b.href = url.toString();
+                    } else {
+                        utmData.forEach(function (pair) {
+                            var parts = pair.split('=');
+                            if (!url.searchParams.has(parts[0])) url.searchParams.set(parts[0], decodeURIComponent(parts[1]));
+                        });
+                        b.href = url.toString();
+                    }
                 } catch (e) { }
             }
 
-            function setupCheckoutTracking() {
-                // Track Básico (agora dentro do pop-up)
-                const btnBasico = document.querySelector('.upsell-decline');
-                if (btnBasico) {
-                    btnBasico.addEventListener('click', function () { trackCheckout('basico'); });
-                }
-
-                // Track Completo (Main button, Upsell, WhatsApp)
-                const completoSelectors = ['#btn-completo', '.upsell-confirm', '.whatsapp-float'];
-                completoSelectors.forEach(function (sel) {
-                    document.querySelectorAll(sel).forEach(function (el) {
-                        el.addEventListener('click', function () { trackCheckout('completo'); });
-                    });
-                });
-
-                // Inject UTMs into all links
-                document.querySelectorAll('a').forEach(injectLink);
-            }
+            function injectAll() { document.querySelectorAll('a').forEach(injectLink); }
 
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', setupCheckoutTracking);
+                document.addEventListener('DOMContentLoaded', injectAll);
             } else {
-                setupCheckoutTracking();
+                injectAll();
             }
-            window.addEventListener('load', setupCheckoutTracking);
+            window.addEventListener('load', injectAll);
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var obs = new MutationObserver(function (mutations) {
+                    mutations.forEach(function (m) {
+                        m.addedNodes.forEach(function (node) {
+                            if (node.nodeType !== 1) return;
+                            if (node.tagName === 'A') injectLink(node);
+                            if (node.querySelectorAll) node.querySelectorAll('a').forEach(injectLink);
+                        });
+                    });
+                });
+                obs.observe(document.body, { childList: true, subtree: true });
+            });
+
+            document.addEventListener('click', function (e) {
+                var el = e.target;
+                while (el && el.tagName !== 'A') el = el.parentElement;
+                if (!el || !el.href) return;
+                if (el.href.indexOf('wa.me') !== -1 || el.href.indexOf('api.whatsapp.com') !== -1 || el.href.indexOf('whatsapp.com/send') !== -1) {
+                    injectLink(el);
+                }
+            }, true);
         })();
     </script>
     <noscript><img height="1" width="1" style="display:none"
@@ -377,6 +402,46 @@
                         <div class="swiper-slide carousel-item"><img src="assets/Ford%20Mustang%20Shelby%20GT350R.webp"
                                 alt="Mustang Shelby" loading="lazy" decoding="async">
                             <div class="car-name">Mustang Shelby</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-category mt-50 reveal-left">
+                <h3 class="category-title text-center">Carros da Fórmula 1</h3>
+                <div class="swiper infinite-carousel car-swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide carousel-item"><img src="assets/AUDI%20F1.webp" alt="Audi F1"
+                                loading="lazy" decoding="async">
+                            <div class="car-name">Audi F1</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/AUDI%20R26%20F1.webp" alt="Audi R26 F1"
+                                loading="lazy" decoding="async">
+                            <div class="car-name">Audi R26 F1</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/F1%202026.webp" alt="F1 2026"
+                                loading="lazy" decoding="async">
+                            <div class="car-name">F1 2026</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/F1%20DA%20REDBULL.webp"
+                                alt="Redbull F1" loading="lazy" decoding="async">
+                            <div class="car-name">Redbull F1</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/F1%20MERCEDES%202026.webp"
+                                alt="Mercedes F1 2026" loading="lazy" decoding="async">
+                            <div class="car-name">Mercedes F1 2026</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/MCL39.webp" alt="MCL39" loading="lazy"
+                                decoding="async">
+                            <div class="car-name">MCL39</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/MCLAREN%20AYRTON%20SENNA.webp"
+                                alt="McLaren Senna" loading="lazy" decoding="async">
+                            <div class="car-name">McLaren Senna</div>
+                        </div>
+                        <div class="swiper-slide carousel-item"><img src="assets/MCLAREN.webp" alt="McLaren"
+                                loading="lazy" decoding="async">
+                            <div class="car-name">McLaren</div>
                         </div>
                     </div>
                 </div>
@@ -836,6 +901,15 @@
                 <p class="investment-copy">Lembre-se: Este não é apenas um gasto, mas um <strong>investimento
                         lucrativo</strong>. Com a venda de apenas 2 ou 3 miniaturas, você já recupera todo o seu
                     investimento e passa a ter lucro puro!</p>
+
+                <div class="pix-discount-premium reveal-up"
+                    style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: rgba(50, 188, 173, 0.1); border: 1px solid rgba(50, 188, 173, 0.25); color: #32BCAD; padding: 10px 22px; border-radius: 50px; font-weight: 700; font-size: 0.95rem; margin-top: 25px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 20px rgba(50, 188, 173, 0.15);">
+                    <svg viewBox="0 0 512 512" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#32BCAD"
+                            d="M119.345 352.545L227.145 244.745L119.345 136.945L40.9453 215.345C24.7453 231.545 24.7453 257.945 40.9453 274.145L119.345 352.545ZM392.645 352.545L284.845 244.745L392.645 136.945L471.045 215.345C487.245 231.545 487.245 257.945 471.045 274.145L392.645 352.545ZM255.945 215.945L148.145 108.145L226.545 29.7453C242.745 13.5453 269.145 13.5453 285.345 29.7453L363.745 108.145L255.945 215.945ZM255.945 273.545L148.145 381.345L226.545 459.745C242.745 475.945 269.145 475.945 285.345 459.745L363.745 381.345L255.945 273.545Z" />
+                    </svg>
+                    Ganhe 5% de Desconto no PIX
+                </div>
             </div>
             <div class="pricing-grid">
                 <!-- PLANO 1 -->
@@ -844,9 +918,9 @@
                     <img src="assets/mockup_oferta.webp" alt="Garagem 3D Básico" class="plan-img" loading="lazy">
                     <h3 class="plan-name">PLANO BÁSICO</h3>
                     <div class="price-container">
-                        <span class="old-price-plan">R$ 19,90</span>
+                        <span class="old-price-plan">R$ 29,90</span>
                         <div class="price">
-                            <span class="currency">R$</span>9,90
+                            <span class="currency">R$</span>14,90
                         </div>
                     </div>
                     <ul class="plan-features">
@@ -869,13 +943,15 @@
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg> Receba no E-mail e WhatsApp</li>
                     </ul>
-                    <a href="#" id="btn-basico" class="cta-button ghost-btn w-100">QUERO O PLANO
+                    <a href="#" onclick="showUpsellModal(event)" id="btn-basico"
+                        class="cta-button ghost-btn w-100">QUERO O PLANO
                         BÁSICO</a>
 
                     <!-- TRUST BADGES ABAIXO DO BOTÃO -->
                     <div class="plan-trust-badges">
                         <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e
-                            <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
+                            <img src="assets/icon_email.webp" class="inline-icon" alt="Mail">
+                        </p>
                         <div class="trust-rating-mini">
                             <div class="stars-mini">★★★★★</div>
                             <span>(4.9/5)</span>
@@ -911,13 +987,16 @@
                     <div class="price-container">
                         <span class="old-price-plan">R$ 97,00</span>
                         <div class="price">
-                            <span class="currency">R$</span>29,90
+                            <span class="currency">R$</span>37,90
                         </div>
                     </div>
                     <ul class="plan-features">
                         <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg> +150 Modelos Prontos p/ Imprimir 🔥</li>
+                        <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg> Carros da Fórmula 1 🔥</li>
                         <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg> Superesportivos 🔥</li>
@@ -976,14 +1055,15 @@
                         </div>
                     </div>
 
-                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" id="btn-completo"
+                    <a href="https://ggcheckout.app/checkout/v5/Zj5MrdupVGz9mwMmtid2" id="btn-completo"
                         class="cta-button opp-btn pulse-anim w-100" style="margin-bottom: 0;">QUERO O PLANO
                         COMPLETO</a>
 
                     <!-- TRUST BADGES ABAIXO DO BOTÃO -->
                     <div class="plan-trust-badges">
                         <p>Receba na hora no seu <img src="assets/logo whatsapp.webp" class="inline-icon" alt="WA"> e
-                            <img src="assets/icon_email.webp" class="inline-icon" alt="Mail"></p>
+                            <img src="assets/icon_email.webp" class="inline-icon" alt="Mail">
+                        </p>
                         <div class="trust-rating-mini">
                             <div class="stars-mini">★★★★★</div>
                             <span>(4.9/5)</span>
@@ -1264,8 +1344,8 @@
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                         </svg>
                     </a>
-                    <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" target="_blank"
-                        rel="noopener noreferrer" class="social-link"
+                    <a href="https://wa.me/5583993675962?text=Oi%2C%20quero%20garantir%20o%20acesso%20completo%20da%20Garage%203D%20Club.%20Como%20funciona%20pra%20receber%20os%20arquivos%3F"
+                        target="_blank" rel="noopener noreferrer" class="social-link"
                         style="color: var(--text-muted); transition: color 0.3s; display: flex;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                             stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
@@ -1290,8 +1370,8 @@
                 Este site não faz parte do site do Facebook ou da Facebook Inc. Além disso, este site não é endossado
                 pelo Facebook de qualquer maneira. FACEBOOK é uma marca comercial da FACEBOOK, Inc.
             </p> <!-- WHATSAPP FLOATING BUTTON -->
-            <a href="https://ggcheckout.app/checkout/v2/Zj5MrdupVGz9mwMmtid2" class="whatsapp-float" target="_blank"
-                rel="noopener noreferrer">
+            <a href="https://wa.me/5583993675962?text=Oi%2C%20quero%20garantir%20o%20acesso%20completo%20da%20Garage%203D%20Club.%20Como%20funciona%20pra%20receber%20os%20arquivos%3F"
+                class="whatsapp-float" target="_blank" rel="noopener noreferrer">
                 <img src="assets/logo whatsapp.webp" alt="WhatsApp Support">
                 <span class="whatsapp-tooltip">Dúvidas? Fale conosco!</span>
             </a>
@@ -1305,58 +1385,69 @@
                 </div>
             </div>
 
-            <!-- POP-UP UPSELL -->
-            <div id="upsell-modal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="offer-tag">OFERTA IRRESISTÍVEL</span>
-                        <h2>ESPERE! LEVE O PLANO COMPLETO POR APENAS R$ 19,90!</h2>
-                    </div>
-                    <div class="modal-body">
-                        <img src="assets/mockup_premium.webp" alt="Plano Completo" class="modal-mockup">
-                        <p>Por que levar apenas o básico se você pode ter a <strong>coleção completa</strong> e todos os
-                            bônus com esse desconto único?</p>
 
-                        <ul
-                            style="text-align: left; list-style: none; padding: 0; margin: 15px 0; font-size: 0.9rem; color: #e0e0e0; display: flex; flex-direction: column; gap: 8px;">
-                            <li style="display: flex; align-items: center; gap: 10px;">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745"
-                                    stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                150+ Arquivos STL Premium
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 10px;">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745"
-                                    stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                Coleção JDM & Superesportivos
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 10px;">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#28a745"
-                                    stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                Todos os 6 Bônus Inclusos
-                            </li>
-                        </ul>
 
-                        <div class="modal-actions">
-                            <a href="https://ggcheckout.app/checkout/v2/yvbd700pilNn6E0rBKRf"
-                                class="cta-button primary-btn upsell-confirm pulse-anim">SIM! QUERO O ACESSO
-                                COMPLETO</a>
-                            <a href="https://ggcheckout.app/checkout/v2/lLAlKlduN9zY6BXkprPY" class="upsell-decline"
-                                style="display: inline-block; margin-top: 10px;">Não, quero continuar com o básico por
-                                R$ 9,90</a>
-                        </div>
+            <!-- MODAL DE UPSELL -->
+            <div id="upsell-modal" class="upsell-modal-overlay"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+                <div class="upsell-modal-content"
+                    style="background: #111; padding: 30px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%; border: 1px solid #333; position: relative;">
+                    <button onclick="closeUpsellModal()"
+                        style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
+
+                    <div
+                        style="background: #e0faec; color: #00b050; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 0.85rem; display: inline-block; margin-bottom: 15px;">
+                        ESPERE! NÃO FECHE ESSA PÁGINA
                     </div>
+
+                    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 10px; line-height: 1.2;">
+                        Gostaria de levar o <span style="color: #cc2929;">Plano Completo</span> com um super desconto?
+                    </h3>
+
+                    <div
+                        style="background: #1a1a1a; border: 1px dashed #444; padding: 10px 20px; border-radius: 8px; margin-bottom: 15px; display: inline-block;">
+                        <span
+                            style="text-decoration: line-through; color: #888; font-size: 0.95rem; display: block; margin-bottom: 2px;">De
+                            R$ 37,90</span>
+                        <span style="color: #00b050; font-weight: 800; font-size: 1.5rem;">Por apenas R$ 19,90</span>
+                    </div>
+
+                    <img src="assets/mockup_oferta.webp" alt="Plano Completo"
+                        style="width: 100%; max-width: 250px; margin: 0 auto 15px auto; display: block; border-radius: 10px;">
+
+                    <p style="color: #ccc; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.4;">
+                        Você terá acesso aos <strong>+150 modelos</strong>, Carros da F1, Superesportivos, JDM e
+                        <strong>todos os 6 bônus exclusivos</strong>.
+                    </p>
+
+                    <a href="https://ggcheckout.app/checkout/v5/yvbd700pilNn6E0rBKRf"
+                        class="cta-button opp-btn pulse-anim w-100"
+                        style="margin-bottom: 15px; font-size: 1.1rem; padding: 15px;">
+                        SIM, QUERO O COMPLETO (R$ 19,90)
+                    </a>
+
+                    <a href="https://ggcheckout.app/checkout/v5/lLAlKlduN9zY6BXkprPY"
+                        style="color: #888; text-decoration: underline; font-size: 0.9rem; display: block; margin-top: 10px;">
+                        Não, obrigado. Quero apenas o Básico por R$ 14,90.
+                    </a>
                 </div>
             </div>
+
+            <script>
+                function showUpsellModal(e) {
+                    e.preventDefault();
+                    document.getElementById('upsell-modal').style.display = 'flex';
+                }
+                function closeUpsellModal() {
+                    document.getElementById('upsell-modal').style.display = 'none';
+                }
+            </script>
 
             <!-- Swiper.js JS -->
             <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
             <script src="js/script.js"></script>
+        </div>
+    </footer>
 </body>
 
 </html>
