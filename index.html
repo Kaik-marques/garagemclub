@@ -112,6 +112,10 @@
                 if (!el || !el.href) return;
                 if (el.href.indexOf('wa.me') !== -1 || el.href.indexOf('api.whatsapp.com') !== -1 || el.href.indexOf('whatsapp.com/send') !== -1) {
                     injectLink(el);
+                } else if (el.href.indexOf('ggcheckout.app') !== -1) {
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'InitiateCheckout');
+                    }
                 }
             }, true);
         })();
