@@ -278,5 +278,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-});
 
+    // Funções do Modal de Downsell
+    window.showUpsellModal = function(event) {
+        if (event) event.preventDefault();
+        const modal = document.getElementById('upsell-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    };
+
+    window.closeUpsellModal = function() {
+        const modal = document.getElementById('upsell-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('upsell-modal');
+        if (event.target === modal) {
+            window.closeUpsellModal();
+        }
+    });
+});
